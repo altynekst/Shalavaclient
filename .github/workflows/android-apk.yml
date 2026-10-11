@@ -1,0 +1,49 @@
+name: Android APK arm64
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    runs-on: ubuntu-24.04
+    env:
+      CARGO_HTTP_MULTIPLEXING: false
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Validate Gradle Wrapper
+      uses: gradle/actions/wrapper-validation@v4
+
+    - name: Prepare Linux
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install -y ninja-build openjdk-21-jdk openssl wget unzip
+        curl -LO https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-Linux-x86_64.tar.gz
+        mkdir -p /home/runner/cmake
+        tar --strip-components 1 -C /home/runner/cmake -xf cmake-3.22.1-Linux-x86_64.tar.gz
+        rustup default 1.92.0
+        cargo install cargo-ndk
+        rustup target add aarch64-linux-android
+        scripts/android/download_android_sdk.sh /home/runner
+
+    - name: Build Android app (arm64)
+      env:
+        TW_KEY_NAME: /home/runner/DDNet.jks
+        TW_KEY_ALIAS: DDNet-Key
+        ANDROID_HOME: /home/runner/Android/Sdk
+      run: |
+        export TW_KEY_PW="$(openssl rand -base64 32)"
+        keytool -genkey -v -keystore "$TW_KEY_NAME" -keyalg RSA -keysize 2048 -validity 10000 -alias "$TW_KEY_ALIAS" -storepass "$TW_KEY_PW" -dname "CN=DDNet CI, OU=DDNet, O=DDNet"
+        unset ANDROID_SDK_ROOT
+        export PATH=/home/runner/cmake/bin:$PATH
+        bash scripts/android/cmake_android.sh arm64 DDNet org.ddnet.client Release build-android
+        mkdir -p artifacts
+        mv build-android/DDNet.apk artifacts/
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: shalava-android-arm64
+        path: artifacts
