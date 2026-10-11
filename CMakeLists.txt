@@ -2616,6 +2616,18 @@ if(CLIENT)
     components/shalawa/visuals/wasapi_impl.h
     components/shalawa/visuals/media_info.h
     components/shalawa/visuals/media_info.cpp
+    components/shalawa/tas/shplayer.cpp
+    components/shalawa/tas/shplayer.h
+    components/shalawa/tas/shpredict.cpp
+    components/shalawa/tas/shpredict.h
+    components/shalawa/tas/shrecorder.cpp
+    components/shalawa/tas/shrecorder.h
+    components/shalawa/tas/shrender.cpp
+    components/shalawa/tas/shrender.h
+    components/shalawa/tas/shworld.cpp
+    components/shalawa/tas/shworld.h
+    components/shalawa/tas/tas.cpp
+    components/shalawa/tas/tas.h
     components/particles.cpp
     components/particles.h
     components/players.cpp

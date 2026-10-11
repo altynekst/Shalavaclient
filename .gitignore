@@ -26,6 +26,7 @@ SAN.*
 _CPack_Packages/
 build.ninja
 checksummed_*
+!cmake/checksummed_extra.txt
 cmake_install.cmake
 debug
 gmock.pc
@@ -110,6 +111,7 @@ tags
 !ddnet-cmake-tools-kits.json
 
 *.a
+!ddnet-libs/**/*.a
 *.cmd
 *.csv
 *.dll
