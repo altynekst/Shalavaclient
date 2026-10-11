@@ -36,7 +36,6 @@ jobs:
     - name: Build Android app
       env:
         ANDROID_HOME: /home/runner/Android/Sdk
-        ANDROID_SDK_ROOT: /home/runner/Android/Sdk
       run: |
         unset ANDROID_SDK_ROOT
         bash scripts/android/cmake_android.sh all DDNet org.ddnet.client Release build-android
