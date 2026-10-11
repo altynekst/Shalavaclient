@@ -27,8 +27,11 @@ jobs:
         distribution: temurin
         java-version: 17
 
+    - name: Fix script permissions
+      run: chmod +x scripts/android/*.sh
+
     - name: Download Android SDK
-      run: scripts/android/download_android_sdk.sh /home/runner
+      run: bash scripts/android/download_android_sdk.sh /home/runner
 
     - name: Build Android app
       env:
@@ -36,7 +39,7 @@ jobs:
         ANDROID_SDK_ROOT: /home/runner/Android/Sdk
       run: |
         unset ANDROID_SDK_ROOT
-        scripts/android/cmake_android.sh all DDNet org.ddnet.client Release build-android
+        bash scripts/android/cmake_android.sh all DDNet org.ddnet.client Release build-android
 
     - name: Rename APK
       run: |
