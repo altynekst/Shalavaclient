@@ -1,0 +1,2 @@
+DDNet 19.7.0
+TClient 10.7.0
